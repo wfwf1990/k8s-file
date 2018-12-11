@@ -1,0 +1,41 @@
+apiVersion: v1 
+kind: Service 
+metadata: 
+  name: redis-service 
+spec: 
+  selector: 
+    app: redis-log
+  type: NodePort
+  ports: 
+  - name: redis
+    protocol: TCP
+    port: 6379 
+    targetPort: 6379
+---
+apiVersion: apps/v1beta2 
+kind: Deployment 
+metadata: 
+  name: redis
+spec: 
+  replicas: 1 
+  selector: 
+    matchLabels: 
+      app: redis-log 
+  template: 
+    metadata: 
+      labels: 
+        app: redis-log
+    spec: 
+      containers: 
+      - name: redis
+        image: redis:3.0.7
+        ports: 
+        - containerPort: 6379
+        resources:
+          requests:
+            memory: "64Mi"
+            cpu: "250m"
+          limits:
+            memory: "128Mi"
+            cpu: "512m"
+      restartPolicy: Always
