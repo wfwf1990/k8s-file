@@ -1,0 +1,41 @@
+apiVersion: v1
+kind: PersistentVolume 
+metadata:
+  name: nfs-pv001
+  labels: 
+    name: nfs-pv001
+spec: 
+  nfs:
+    path: /data/vol1
+    server: nfs.wangfang.com
+  accessModes: ["ReadWriteMany","ReadWriteOnce"]
+  capacity: 
+    storage: 2Gi
+---
+apiVersion: v1
+kind: PersistentVolume 
+metadata:
+  name: nfs-pv002
+  labels: 
+    name: nfs-pv002
+spec: 
+  nfs:
+    path: /data/vol2
+    server: nfs.wangfang.com
+  accessModes: ["ReadWriteOnce"]
+  capacity: 
+    storage: 5Gi
+---
+apiVersion: v1
+kind: PersistentVolume 
+metadata:
+  name: nfs-pv003
+  labels: 
+    name: nfs-pv003
+spec: 
+  nfs:
+    path: /data/vol3
+    server: nfs.wangfang.com
+  accessModes: ["ReadWriteOnce"]
+  capacity: 
+    storage: 10Gi
