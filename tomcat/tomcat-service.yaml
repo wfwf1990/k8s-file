@@ -1,0 +1,13 @@
+apiVersion: v1 
+kind: Service 
+metadata: 
+  name: tomcat-basic-service
+spec: 
+  selector:      
+    app: tomcat-basic
+  type: NodePort
+  ports: 
+  - name: http 
+    protocol: TCP
+    port: 8080
+    targetPort: 8080

@@ -1,0 +1,57 @@
+apiVersion: apps/v1beta2 
+kind: Deployment 
+metadata: 
+  name: tomcat-basic-deployment 
+spec: 
+  replicas: 1
+  selector: 
+    matchLabels: 
+      app: tomcat-basic 
+  template: 
+    metadata: 
+      labels: 
+        app: tomcat-basic 
+    spec: 
+      containers: 
+      - name: tomcat-basic
+        image: yourimage
+        ports: 
+        - containerPort: 8080
+        resources:
+          requests:
+            memory: "512Mi"
+            cpu: "250m"
+          limits:
+            memory: "2000Mi"
+            cpu: "1024m"
+        livenessProbe:    
+          httpGet:         
+            path: /index.html
+            port: 8080
+          initialDelaySeconds: 90
+          periodSeconds: 3
+          successThreshold: 1
+          failureThreshold: 3
+        volumeMounts: 
+          - name: context-config 
+            mountPath: /usr/local/tomcat/conf/context.xml 
+            subPath: context.xml 
+            readOnly: false
+          - name: server-config 
+            mountPath: /usr/local/tomcat/conf/server.xml 
+            readOnly: false
+            subPath: server.xml
+          - name: management-war 
+            mountPath: /usr/local/tomcat/webapps
+
+      volumes: 
+      - name: context-config 
+        configMap:
+          name: context-file 
+      - name: server-config 
+        configMap:
+          name: server-file 
+      - name: management-war 
+        hostPath:
+          path: /app/webroot/basic/
+          type: Directory
